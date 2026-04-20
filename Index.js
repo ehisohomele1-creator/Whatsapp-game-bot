@@ -1,5 +1,18 @@
 const { default: makeWASocket, useMultiFileAuthState } = require("@whiskeysockets/baileys");
 const qrcode = require("qrcode-terminal");
+const http = require("http");
+
+// ======================
+// 🔥 ALIVE SERVER (RENDER FIX)
+// ======================
+http.createServer((req, res) => {
+  res.write("🤖 WhatsApp GC Bot is running");
+  res.end();
+}).listen(process.env.PORT || 3000);
+
+// ======================
+// 🎮 TRUTH & DARE DATA
+// ======================
 
 const truths = [
 "Have you ever lied to your best friend?",
@@ -7,109 +20,76 @@ const truths = [
 "Who was your first crush?",
 "Have you ever cheated in a game?",
 "What is your secret habit?",
+"What’s your most embarrassing moment?",
 "Have you ever stalked someone online?",
-"What's the most embarrassing thing you've done?",
-"Who do you secretly admire?",
-"Have you ever told a secret you shouldn't?",
-"What’s your guilty pleasure?",
-"Have you ever been caught lying?",
+"Who do you like in this group?",
 "What’s your biggest insecurity?",
-"Who in this group do you like most?",
-"Have you ever had a crush on a teacher?",
-"What’s your weirdest dream?",
-"Have you ever cried watching a movie?",
-"What’s your most embarrassing nickname?",
 "Have you ever been rejected?",
-"What’s your biggest regret?",
 "Who was your last text to?",
 "Have you ever faked being sick?",
-"What’s something you’ve never told anyone?",
-"Have you ever talked in sleep?",
-"Who do you trust most?",
-"What’s your darkest secret?",
-"Have you ever been jealous of someone here?",
-"What’s your worst habit?",
-"Have you ever been in trouble at school/work?",
-"What’s your dream date?",
-"Who was your last call to?",
-"Have you ever cheated on a test?",
-"What’s your biggest fantasy (non-explicit)?",
-"Have you ever lied about your age?",
-"Who do you miss right now?",
-"What’s your most awkward moment?",
-"Have you ever sent a wrong message?",
-"What’s your biggest weakness?",
-"Have you ever pretended to like someone?",
-"What’s your happiest memory?",
-"Who knows you best?",
-"Have you ever been heartbroken?",
-"What’s your favorite secret hobby?",
-"Have you ever ignored someone on purpose?",
-"What’s your dream job?",
+"What’s your guilty pleasure?",
 "Have you ever cried in public?",
-"What’s your biggest crush type?",
+"Who do you trust the most?",
+"What’s your secret hobby?",
+"Have you ever lied to your parents?",
+"What’s your dream relationship?",
+"Have you ever cheated on a test?",
+"What’s your worst habit?",
+"Who is your favorite person here?",
+"Have you ever been jealous?",
+"What’s your biggest regret?",
+"Have you ever sent a wrong message?",
+"What’s your darkest secret?",
+"Who was your last call to?",
+"What’s your dream job?",
 "Have you ever broken a promise?",
-"What’s something you fear losing?",
-"Who would you switch lives with for a day?"
+"What’s your biggest fear in life?",
+"Who do you miss right now?"
 ];
 
 const dares = [
-"Send ❤️ to your crush (or pretend)",
-"Talk in emojis only for 5 minutes",
-"Say something flirty to a random person in GC",
-"Send your last emoji keyboard screenshot",
-"Type with eyes closed for one message",
-"Call a friend and say 'I miss you'",
-"Change your profile name for 10 minutes",
-"Send a voice note singing any song",
-"Write a romantic message to yourself",
-"Spam '😂' 10 times in GC",
-"Confess a fake secret",
-"Say 'I love coding' in a dramatic way",
-"Send a random selfie (if comfortable)",
-"Act like a robot for 3 messages",
-"Say something nice to everyone in GC",
-"Text your crush 'hi' (or pretend)",
-"Don’t use vowels for 2 messages",
-"Reply only in GIF style words",
-"Say your crush name out loud (or fake one)",
-"Send your funniest emoji combo",
-"Write a poem about food",
-"Change your status to 'I'm watching you 👀'",
-"Say something in caps only",
-"Compliment the last person who texted",
-"Act like a celebrity for 1 minute",
-"Send 5 random emojis that describe your mood",
-"Say your last Google search",
-"Send 'lol' after every message for 5 mins",
-"Type like a baby for 3 messages",
-"Say something dramatic like a movie scene",
-"Send your battery percentage screenshot",
-"Say something you never told anyone",
-"Send 'I'm innocent 😇' 5 times",
-"Speak only in questions for 2 messages",
-"Write your name backwards",
+"Send ❤️ to your crush",
+"Text someone 'I miss you'",
+"Act like a robot for 2 messages",
+"Send your last emoji",
+"Call a friend and say hi dramatically",
+"Spam 😂 in the group 10 times",
+"Write your crush name (or fake one)",
+"Talk only in emojis for 5 mins",
+"Send a voice note singing",
+"Change your name to 'King/Queen' for 10 mins",
 "Say something romantic to the group",
-"Send a fake confession",
-"Act like you are angry for 2 messages",
-"Say your favorite food dramatically",
-"Send 3 random facts about yourself",
-"Replace every word with 'banana' for 2 messages",
+"Act like a gangster for 2 messages",
+"Send your battery percentage",
+"Say I love coding loudly",
+"Compliment everyone in the group",
+"Type with eyes closed",
 "Say something funny about yourself",
-"Do a fake apology message",
-"Say your dream superpower",
 "Send your most used emoji",
-"Talk like a gangster for 2 messages",
-"Say something in another language",
-"Send a motivational quote",
+"Talk like a baby for 2 messages",
+"Say your biggest secret (fake allowed)",
 "Act like a teacher for 1 minute",
-"End every message with 😂 for 5 minutes"
+"Say your dream superpower",
+"Write your name backwards",
+"Say something dramatic",
+"Send a random selfie (optional)",
+"Say 'I'm innocent 😇' 5 times",
+"Speak only in questions",
+"Say something in caps only",
+"Act like you are angry",
+"Send 3 random facts about you"
 ];
 
+// ======================
+// 🎲 RANDOM FUNCTION
+// ======================
 function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// ======================
+// 🤖 BOT START
+// ======================
 async function startBot() {
   const { state, saveCreds } = await useMultiFileAuthState("auth");
 
@@ -123,7 +103,7 @@ async function startBot() {
   sock.ev.on("connection.update", (update) => {
     const { connection } = update;
     if (connection === "open") {
-      console.log("✅ Bot is online!");
+      console.log("✅ Bot is ONLINE");
     }
   });
 
@@ -139,22 +119,31 @@ async function startBot() {
 
     const sender = msg.key.remoteJid;
 
+    // 🎮 COMMANDS
     if (text === "!truth") {
-      await sock.sendMessage(sender, { text: "🧠 Truth: " + random(truths) });
+      await sock.sendMessage(sender, {
+        text: "🧠 Truth: " + random(truths)
+      });
     }
 
     if (text === "!dare") {
-      await sock.sendMessage(sender, { text: "🔥 Dare: " + random(dares) });
+      await sock.sendMessage(sender, {
+        text: "🔥 Dare: " + random(dares)
+      });
     }
 
     if (text === "!td") {
-      const choice = Math.random() < 0.5 ? "🧠 Truth: " + random(truths) : "🔥 Dare: " + random(dares);
-      await sock.sendMessage(sender, { text: choice });
+      const result =
+        Math.random() < 0.5
+          ? "🧠 Truth: " + random(truths)
+          : "🔥 Dare: " + random(dares);
+
+      await sock.sendMessage(sender, { text: result });
     }
 
     if (text === "!menu") {
       await sock.sendMessage(sender, {
-        text: `🎮 *Truth & Dare Bot*
+        text: `🎮 *GC GAME BOT*
 Commands:
 !truth - get truth
 !dare - get dare
